@@ -16,10 +16,10 @@
     in {
       devShells.default = pkgs.mkShell {
         packages = with pkgs; [
-	  rustc
-	  cargo
+          rustc
+          cargo
+          rustfmt
         ];
       };
     });
 }
-
