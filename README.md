@@ -2,5 +2,4 @@
 
 ## todo
 
-- Add weather info for city
-- Add Input from user to get city
+- Add Input from user of what city to get temp from

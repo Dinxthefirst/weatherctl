@@ -1,15 +1,14 @@
 use std::error::Error;
 
 use crate::db::CityLocationDatabase;
-use crate::structs::CityLocation;
-use crate::structs::Nominatim;
+use crate::structs::{CityLocation, Nominatim};
 
 async fn fetch_city_location(city_name: &str) -> Result<CityLocation, Box<dyn Error>> {
     let url = format!(
-        "https://nominatim.openstreetmap.org/search?format=json&q={}&limit=1",
+        "https://nominatim.openstreetmap.org/search?format=json&q={}&limit=1&accept-language=en",
         city_name
     );
-    println!("{}", url);
+    // println!("city api: {}", url);
 
     // Needed for nominatim policy
     let client = reqwest::Client::builder()
@@ -23,7 +22,7 @@ async fn fetch_city_location(city_name: &str) -> Result<CityLocation, Box<dyn Er
         .json::<Vec<Nominatim>>()
         .await?;
 
-    let city = data.first().ok_or("Could not get first city")?;
+    let city: &Nominatim = data.first().ok_or("Could not get first city")?;
 
     let lat: f64 = city.lat.parse::<f64>()?;
     let lon: f64 = city.lon.parse::<f64>()?;
