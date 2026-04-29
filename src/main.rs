@@ -1,6 +1,12 @@
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 
+mod structs;
+use crate::structs::CityLocation;
+
+mod db;
+use crate::db::CityLocationDatabase;
+
 #[derive(Debug, Serialize, Deserialize)]
 struct Nominatim {
     lat: String,
@@ -11,14 +17,7 @@ struct Nominatim {
     result_type: String,
 }
 
-#[derive(Debug)]
-struct CityLocation {
-    name: String,
-    lat: f64,
-    lon: f64,
-}
-
-async fn city(city_name: &str) -> Result<CityLocation, Box<dyn Error>> {
+async fn get_city_location(city_name: &str) -> Result<CityLocation, Box<dyn Error>> {
     let url = format!(
         "https://nominatim.openstreetmap.org/search?format=json&q={}&limit=1",
         city_name
@@ -54,12 +53,24 @@ async fn city(city_name: &str) -> Result<CityLocation, Box<dyn Error>> {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let city_name = "Copenhagen";
-    match city(city_name).await {
-        Ok(CityLocation { name, lat, lon }) => {
-            println!("name: {}\nlat: {}\nlon: {}", name, lat, lon)
+    let db_path = "db.json";
+    let mut db: CityLocationDatabase = CityLocationDatabase::load_or_create(db_path)?;
+
+    let city_name = "Los Angeles";
+    let city_location: &CityLocation = match db.get_city(city_name) {
+        None => {
+            let city_location: CityLocation = get_city_location(city_name).await?;
+            db.add_city(city_location.clone());
+            db.get_city(city_name).unwrap()
         }
-        Err(e) => eprintln!("Error: {}", e),
-    }
+        Some(city_location) => city_location,
+    };
+
+    println!(
+        "name: {}\nlat: {}\nlon: {}",
+        city_location.name, city_location.lat, city_location.lon
+    );
+
+    db.save(db_path)?;
     Ok(())
 }
