@@ -1,15 +1,14 @@
 use std::error::Error;
 
-mod city_api;
+mod api;
 mod db;
 mod structs;
-mod weather_api;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     let city_name = "Tokyo";
 
-    let city_location: structs::CityLocation = city_api::get_city_location(city_name).await?;
+    let city_location: structs::CityLocation = api::city::get_city_location(city_name).await?;
 
     // println!(
     //     "name: {}\nlat: {}\nlon: {}",
@@ -17,7 +16,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // );
 
     let city_weather: structs::CityWeather =
-        weather_api::fetch_current_temperature(city_location).await?;
+        api::weather::fetch_current_temperature(city_location).await?;
 
     println!(
         "It is currently {}{} in {}",
