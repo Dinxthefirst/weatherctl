@@ -11,9 +11,7 @@ async fn fetch_city_location(city_name: &str) -> Result<CityLocation, Box<dyn Er
         "https://nominatim.openstreetmap.org/search?format=json&q={}&limit=1&accept-language=en",
         city_name
     );
-    // println!("city api: {}", url);
 
-    // Needed for nominatim policy
     let data = client::CLIENT
         .get(&url)
         .send()
@@ -25,8 +23,8 @@ async fn fetch_city_location(city_name: &str) -> Result<CityLocation, Box<dyn Er
 
     let city_location = CityLocation {
         name: city.name.clone(),
-        lat: city.lat.parse()?,
-        lon: city.lon.parse()?,
+        lat: city.latitude,
+        lon: city.longitude,
     };
 
     Ok(city_location)

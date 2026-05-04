@@ -14,7 +14,6 @@ pub async fn fetch_current_temperature(city: &CityLocation) -> Result<CityWeathe
         "https://api.open-meteo.com/v1/forecast?latitude={}&longitude={}&current=temperature_2m&past_days=0&forecast_days=1",
         city.lat, city.lon,
     );
-    // println!("weather url: {}", url);
 
     let data = client::CLIENT
         .get(&url)
@@ -23,17 +22,9 @@ pub async fn fetch_current_temperature(city: &CityLocation) -> Result<CityWeathe
         .json::<OpenMeteo>()
         .await?;
 
-    // println!(
-    //     "weather data:\nlat: {}\nlon: {}\ntemp: {}\nunit: {}",
-    //     open_meteo.latitude,
-    //     open_meteo.longitude,
-    //     open_meteo.temperature.temperature,
-    //     open_meteo.unit.unit,
-    // );
-
     Ok(CityWeather {
         name: city.name.clone(),
-        temperature: data.temperature.temperature,
-        unit: data.unit.unit,
+        temperature: data.current.temperature,
+        unit: data.unit.temperature_units,
     })
 }

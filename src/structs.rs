@@ -1,48 +1,48 @@
-use serde::{Deserialize, Serialize};
-#[derive(Debug, Serialize, Deserialize, Clone)]
+use serde::Deserialize;
+#[derive(Debug, Clone)]
 pub struct CityLocation {
     pub name: String,
     pub lat: f64,
     pub lon: f64,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Clone)]
 pub struct CityWeather {
     pub name: String,
     pub temperature: f64,
     pub unit: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct Nominatim {
-    // TODO rename lat and lon to full name, and use serde rename to make sure that it is the right objects in the json api call that gets placed at lat and lon location in this object
-    pub lat: String,
-    pub lon: String,
+    #[serde(rename = "lat")]
+    pub latitude: f64,
+    #[serde(rename = "lon")]
+    pub longitude: f64,
     pub name: String,
     pub display_name: String,
     #[serde(rename = "type")]
     pub result_type: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct OpenMeteo {
     pub latitude: f64,
     pub longitude: f64,
     pub timezone: String,
     #[serde(rename = "current_units")]
-    pub unit: TemperatureUnit,
-    #[serde(rename = "current")]
-    pub temperature: Temperature,
+    pub unit: CurrentUnits,
+    pub current: Current,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct TemperatureUnit {
+#[derive(Debug, Deserialize)]
+pub struct CurrentUnits {
     #[serde(rename = "temperature_2m")]
-    pub unit: String,
+    pub temperature_units: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Temperature {
+#[derive(Debug, Deserialize)]
+pub struct Current {
     #[serde(rename = "temperature_2m")]
     pub temperature: f64,
 }
