@@ -48,8 +48,8 @@ impl CityLocationDatabase {
         let rows = stmt.query_map([], |row| {
             Ok(CityLocation {
                 name: row.get(0)?,
-                lat: row.get(0)?,
-                lon: row.get(0)?,
+                lat: row.get(1)?,
+                lon: row.get(2)?,
             })
         })?;
         rows.collect()
