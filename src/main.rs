@@ -1,12 +1,12 @@
 use std::error::Error;
 
 mod api;
-mod db;
+mod sql;
 mod structs;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let city_name = "Tokyo";
+    let city_name = "Copenhagen";
 
     let city_location: structs::CityLocation = api::city::get_city_location(city_name).await?;
 
@@ -16,7 +16,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // );
 
     let city_weather: structs::CityWeather =
-        api::weather::fetch_current_temperature(city_location).await?;
+        api::weather::fetch_current_temperature(&city_location).await?;
 
     println!(
         "It is currently {}{} in {}",
