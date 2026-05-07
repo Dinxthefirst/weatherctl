@@ -23,8 +23,8 @@ async fn fetch_city_location(city_name: &str) -> Result<CityLocation, Box<dyn Er
 
     let city_location = CityLocation {
         name: city.name.clone(),
-        lat: city.latitude,
-        lon: city.longitude,
+        lat: city.latitude.parse::<f64>()?,
+        lon: city.longitude.parse::<f64>()?,
     };
 
     Ok(city_location)

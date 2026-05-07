@@ -16,20 +16,20 @@ pub struct CityWeather {
 #[derive(Debug, Deserialize)]
 pub struct Nominatim {
     #[serde(rename = "lat")]
-    pub latitude: f64,
+    pub latitude: String,
     #[serde(rename = "lon")]
-    pub longitude: f64,
+    pub longitude: String,
     pub name: String,
-    pub display_name: String,
-    #[serde(rename = "type")]
-    pub result_type: String,
+    // pub display_name: String,
+    // #[serde(rename = "type")]
+    // pub result_type: String,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct OpenMeteo {
-    pub latitude: f64,
-    pub longitude: f64,
-    pub timezone: String,
+    // pub latitude: f64,
+    // pub longitude: f64,
+    // pub timezone: String,
     #[serde(rename = "current_units")]
     pub unit: CurrentUnits,
     pub current: Current,

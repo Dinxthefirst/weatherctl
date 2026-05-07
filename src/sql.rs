@@ -43,15 +43,15 @@ impl CityLocationDatabase {
         Ok(())
     }
 
-    pub fn all_cities(&self) -> Result<Vec<CityLocation>> {
-        let mut stmt = self.conn.prepare("SELECT name, lat, lon FROM cities")?;
-        let rows = stmt.query_map([], |row| {
-            Ok(CityLocation {
-                name: row.get(0)?,
-                lat: row.get(1)?,
-                lon: row.get(2)?,
-            })
-        })?;
-        rows.collect()
-    }
+    // pub fn all_cities(&self) -> Result<Vec<CityLocation>> {
+    //     let mut stmt = self.conn.prepare("SELECT name, lat, lon FROM cities")?;
+    //     let rows = stmt.query_map([], |row| {
+    //         Ok(CityLocation {
+    //             name: row.get(0)?,
+    //             lat: row.get(1)?,
+    //             lon: row.get(2)?,
+    //         })
+    //     })?;
+    //     rows.collect()
+    // }
 }
